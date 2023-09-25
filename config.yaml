@@ -16,7 +16,7 @@
        - ansible_distribution == "Ubuntu"
        - ansible_distribution == "Centos"
        
-   - name: set python3 as default pip (Ubuntu)
+   - name: set python3 as default python (Ubuntu)
      command: "ln -sf /usr/bin/python3 /usr/bin/python"
      when: 
        - ansible_distribution == "Ubuntu"
