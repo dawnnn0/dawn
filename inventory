@@ -1,3 +1,7 @@
 [remote_servers]
-<ip add>    python_package=python3 pip_package=python3-pip
-<ip add>    python_package=python3 pip_package=python3-pip
+<ip add>    python_package=python3 pip_package=python3-pip java_package=openjdk-11-jdk new_user=ansible_user
+<ip add>    python_package=python3 pip_package=python3-pip java_package=java-11-openjdk-devel new_user=ansible_user 
+
+#DELETE IF NOT NEEDED
+<ip add> ansible_python_interpreter=/usr/bin/python2
+###############
