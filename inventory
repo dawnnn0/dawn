@@ -1,0 +1,3 @@
+[remote_servers]
+<ip add>    python_package=python3 pip_package=python3-pip
+<ip add>    python_package=python3 pip_package=python3-pip
