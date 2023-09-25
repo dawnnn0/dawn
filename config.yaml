@@ -1,0 +1,21 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+  -  name: install python3 and pip3
+     package:
+       name:
+         - "{{ python_package }}"
+         - "{{ pip_package }}"
+       state: latest
+
+   - name: set pip3 as default pip (Ubuntu)
+     command: "ln -sf /usr/bin/pip3 /usr/bin/pip"
+     when: 
+       - ansible_distribution == "Ubuntu"
+       - ansible_distribution == "Centos"
+
+   - name: set pip3 as default pip (Centos)
+     command: "ln -sf /usr/bin/pip3 /usr/bin/pip"
+     when: ansible_distribution == "Centos"
