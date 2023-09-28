@@ -12,15 +12,13 @@
 
    - name: set pip3 as default pip (Ubuntu)
      command: "ln -sf /usr/bin/pip3 /usr/bin/pip"
-     when: 
-       - ansible_distribution == "Ubuntu"
-       - ansible_distribution == "Centos"
+     when: (ansible_facts['distribution'] == "Ubuntu") or
+           (ansible_facts['distribution'] == "CentOS")
        
    - name: set python3 as default python (Ubuntu)
      command: "ln -sf /usr/bin/python3 /usr/bin/python"
-     when: 
-       - ansible_distribution == "Ubuntu"
-       - ansible_distribution == "Centos"
+     when: (ansible_facts['distribution'] == "Ubuntu") or
+           (ansible_facts['distribution'] == "CentOS")
 
    - name: install java openJDK
      package:
