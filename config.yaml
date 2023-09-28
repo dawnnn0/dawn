@@ -22,7 +22,7 @@
 
    - name: install java openJDK
      package:
-       name: "{{ jave_package }}"
+       name: "{{ java_package }}"
        state: latest
 
    - name: create motd file
