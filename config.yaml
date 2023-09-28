@@ -10,12 +10,12 @@
          - "{{ pip_package }}"
        state: latest
 
-   - name: set pip3 as default pip (Ubuntu)
+   - name: set pip3 as default pip
      command: "ln -sf /usr/bin/pip3 /usr/bin/pip"
      when: (ansible_facts['distribution'] == "Ubuntu") or
            (ansible_facts['distribution'] == "CentOS")
        
-   - name: set python3 as default python (Ubuntu)
+   - name: set python3 as default python
      command: "ln -sf /usr/bin/python3 /usr/bin/python"
      when: (ansible_facts['distribution'] == "Ubuntu") or
            (ansible_facts['distribution'] == "CentOS")
