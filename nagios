@@ -1,0 +1,72 @@
+---
+- name: Install Nagios
+  hosts: target
+  become: yes
+
+  tasks:
+    - name: Install required packages
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - httpd
+        - php
+        - gcc
+        - glibc glibc-common
+        - gd gd-devel
+        - perl
+        - openssl-devel
+        - unzip
+        - wget
+
+    - name: Start and enable Apache (HTTPD)
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: Download Nagios Core
+      get_url:
+        url: "https://github.com/NagiosEnterprises/nagioscore/archive/nagios-{{ nagios_version }}.tar.gz"
+        dest: "/tmp/nagioscore.tar.gz"
+
+    - name: Extract Nagios Core
+      command: "tar xzf /tmp/nagioscore.tar.gz -C /tmp/"
+
+    - name: Compile and install Nagios Core
+      command: "cd /tmp/nagioscore-nagios-{{ nagios_version }} && ./configure --with-command-group=nagcmd && make all && make install"
+
+    - name: Create Nagios user and group
+      command: "useradd nagios && groupadd nagcmd && usermod -a -G nagcmd nagios"
+
+    - name: Set the Nagios web interface password
+      command: htpasswd -b -c /usr/local/nagios/etc/htpasswd.users nagiosadmin "{{ nagios_admin_password }}"
+
+    - name: Configure SELinux to allow Nagios to send emails
+      selinux:
+        seuser: nagios
+        serole: system_r
+        setype: nagios_run_t
+        selevel: s0
+
+    - name: Start and enable Nagios service
+      service:
+        name: nagios
+        state: started
+        enabled: yes
+
+    - name: Install NRPE plugin
+      get_url:
+        url: "https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-{{ nrpe_version }}/nrpe-{{ nrpe_version }}.tar.gz"
+        dest: "/tmp/nrpe.tar.gz"
+
+    - name: Extract NRPE
+      command: "tar xzf /tmp/nrpe.tar.gz -C /tmp/"
+
+    - name: Compile and install NRPE
+      command: "cd /tmp/nrpe-{{ nrpe_version }} && ./configure --enable-command-args && make all && make install"
+
+  vars:
+    nagios_version: 4.4.6
+    nagios_admin_password: your_admin_password
+    nrpe_version: 4.1.1
